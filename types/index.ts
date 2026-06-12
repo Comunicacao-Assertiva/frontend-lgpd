@@ -1,17 +1,19 @@
-export type AnswerValue = 0 | 1 | 2;
-
 export interface Answers {
-  [key: string]: AnswerValue;
+  [questionIndex: number]: { optionIndex: number; score: number };
 }
 
-export interface PillarData {
+export interface QuestionOption {
+  text: string;
+  score: number;
+}
+
+export interface QuestionData {
   id: number;
-  axis: 'governance' | 'security';
-  name: string;
-  questions: string[];
+  text: string;
+  options: QuestionOption[];
 }
 
-export interface QuadrantData {
+export interface LevelData {
   id: 1 | 2 | 3 | 4;
   name: string;
   range: [number, number];
@@ -21,68 +23,26 @@ export interface QuadrantData {
   borderColor: string;
   situation: string;
   action: string;
-  nextQuadrant: string | null;
-  nextSteps: string[];
-}
-
-export interface PillarScore {
-  id: number;
-  name: string;
-  score: number;
-  maxScore: number;
-  percentage: number;
+  steps: string[];
 }
 
 export interface DiagnosticResult {
   totalScore: number;
   maxScore: number;
   percentage: number;
-  quadrant: QuadrantData;
-  govPercentage: number;
-  secPercentage: number;
-  pillarScores: PillarScore[];
+  level: LevelData;
 }
 
 export interface SavedDiagnostic {
-  id: number;               // timestamp (compat)
-  supabaseId: string;       // UUID do Supabase
+  id: number;
+  supabaseId: string;
   timestamp: number;
+  name: string;
   organization: string;
   totalScore: number;
   percentage: number;
-  quadrantId: number;
-  quadrantName: string;
-  quadrantColor: string;
-  govPercentage: number;
-  secPercentage: number;
-  pillarScores: PillarScore[];
+  levelId: number;
+  levelName: string;
+  levelColor: string;
   answers: Answers;
-}
-
-// ─── API (FastAPI) ────────────────────────────────────────
-export interface DiagnosticRequest {
-  organization: string;
-  answers: Answers;
-}
-
-export interface DiagnosticResponse {
-  organization: string;
-  total_score: number;
-  max_score: number;
-  percentage: number;
-  quadrant_id: number;
-  quadrant_name: string;
-  situation: string;
-  action: string;
-  next_quadrant: string | null;
-  next_steps: string[];
-  gov_percentage: number;
-  sec_percentage: number;
-  pillar_scores: {
-    id: number;
-    name: string;
-    score: number;
-    max_score: number;
-    percentage: number;
-  }[];
 }
