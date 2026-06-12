@@ -16,6 +16,7 @@ interface IntroScreenProps {
 
 export function IntroScreen({ name, organization, onNameChange, onOrgChange, onStart, history, historyLoading, onViewResult, onDeleteResult, onViewHistory }: IntroScreenProps) {
   const recent = history.slice(0, 3);
+  const canStart = name.trim().length > 0 && organization.trim().length > 0;
 
   return (
     <div>
@@ -39,16 +40,32 @@ export function IntroScreen({ name, organization, onNameChange, onOrgChange, onS
       </div>
 
       <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-700 rounded-xl p-4 mb-5">
-        <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mb-2.5">Identificação</p>
+        <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 mb-2.5">
+          Identificação <span className="text-red-400 font-normal text-xs ml-1">* obrigatório</span>
+        </p>
         <div className="flex flex-col gap-2">
-          <input type="text" placeholder="Seu nome" value={name} onChange={e => onNameChange(e.target.value)}
-            className="w-full px-3.5 py-2.5 border border-neutral-300 dark:border-neutral-600 rounded-lg text-sm text-neutral-900 dark:text-neutral-100 bg-white dark:bg-neutral-800 outline-none focus:border-teal-500 transition-colors" />
-          <input type="text" placeholder="Nome da organização" value={organization} onChange={e => onOrgChange(e.target.value)}
-            className="w-full px-3.5 py-2.5 border border-neutral-300 dark:border-neutral-600 rounded-lg text-sm text-neutral-900 dark:text-neutral-100 bg-white dark:bg-neutral-800 outline-none focus:border-teal-500 transition-colors" />
+          <input
+            type="text"
+            placeholder="Seu nome *"
+            value={name}
+            onChange={e => onNameChange(e.target.value)}
+            className="w-full px-3.5 py-2.5 border border-neutral-300 dark:border-neutral-600 rounded-lg text-sm text-neutral-900 dark:text-neutral-100 bg-white dark:bg-neutral-800 outline-none focus:border-teal-500 transition-colors"
+          />
+          <input
+            type="text"
+            placeholder="Nome da organização *"
+            value={organization}
+            onChange={e => onOrgChange(e.target.value)}
+            className="w-full px-3.5 py-2.5 border border-neutral-300 dark:border-neutral-600 rounded-lg text-sm text-neutral-900 dark:text-neutral-100 bg-white dark:bg-neutral-800 outline-none focus:border-teal-500 transition-colors"
+          />
         </div>
       </div>
 
-      <button onClick={onStart} className="w-full flex items-center justify-center gap-2 bg-teal-800 hover:bg-teal-700 text-teal-100 font-semibold py-3.5 rounded-xl text-[15px] transition-colors">
+      <button
+        onClick={onStart}
+        disabled={!canStart}
+        className="w-full flex items-center justify-center gap-2 bg-teal-800 hover:bg-teal-700 text-teal-100 font-semibold py-3.5 rounded-xl text-[15px] transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+      >
         Iniciar diagnóstico <ChevronRight size={18} />
       </button>
 
